@@ -79,4 +79,21 @@ public class InventoryAd_ProductController {
             return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getAllProduct") //Get all products from database
+    public ResponseEntity geAllProduct(){
+        try{
+            List<InventoryAd_ProductDto> productDtoList = inventoryAd_productService.getAllProduct();
+            inventoryAd_responseDto.setCode(VarList.RSP_SUCCESS);
+            inventoryAd_responseDto.setMessage("Success");
+            inventoryAd_responseDto.setContent(productDtoList);
+            return new ResponseEntity(inventoryAd_responseDto, HttpStatus.ACCEPTED);
+
+        }catch (Exception ex){
+            inventoryAd_responseDto.setCode(VarList.RSP_ERROR);
+            inventoryAd_responseDto.setMessage(ex.getMessage());
+            inventoryAd_responseDto.setContent(null);
+            return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

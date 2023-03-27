@@ -6,8 +6,12 @@ import com.example.springbootAPI.repository.InventoryAd_ProductRepo;
 import com.example.springbootAPI.util.VarList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 @Service
 @Transactional
@@ -39,5 +43,12 @@ public class InventoryAd_ProductService {
         }else{
             return VarList.RSP_NO_DATA_FOUND;
         }
+    }
+
+    //Get All products
+    public List<InventoryAd_ProductDto> getAllProduct(){
+        List<Product> productList = inventoryAd_productRepo.findAll();
+        return modelMapper.map(productList, new TypeToken<ArrayList<InventoryAd_ProductDto>>() {
+        }.getType());
     }
 }
