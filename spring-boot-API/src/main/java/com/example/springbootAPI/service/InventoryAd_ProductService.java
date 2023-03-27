@@ -29,4 +29,15 @@ public class InventoryAd_ProductService {
         }
 
     }
+
+    //Update product in database
+    public String updateProduct(InventoryAd_ProductDto inventoryAd_productDto){
+        //Check the product exist or not
+        if(inventoryAd_productRepo.existsById(inventoryAd_productDto.getProduct_id())){
+            inventoryAd_productRepo.save(modelMapper.map(inventoryAd_productDto, Product.class));
+            return VarList.RSP_SUCCESS;
+        }else{
+            return VarList.RSP_NO_DATA_FOUND;
+        }
+    }
 }

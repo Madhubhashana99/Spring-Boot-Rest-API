@@ -48,4 +48,35 @@ public class InventoryAd_ProductController {
             return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @PutMapping(value = "/updateProduct") //Update products
+    public ResponseEntity updateProduct(@RequestBody InventoryAd_ProductDto inventoryAd_productDto){
+
+        try{
+            String res = inventoryAd_productService.updateProduct(inventoryAd_productDto);
+            if (res.equals("00")){
+                inventoryAd_responseDto.setCode(VarList.RSP_SUCCESS);
+                inventoryAd_responseDto.setMessage("Success");
+                inventoryAd_responseDto.setContent(inventoryAd_productDto);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.ACCEPTED);
+
+            }else if(res.equals("01")){
+                inventoryAd_responseDto.setCode(VarList.RSP_DUPLICATED);
+                inventoryAd_responseDto.setMessage("Product is not exist");
+                inventoryAd_responseDto.setContent(inventoryAd_productDto);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.BAD_REQUEST);
+            }else {
+                inventoryAd_responseDto.setCode(VarList.RSP_FAIL);
+                inventoryAd_responseDto.setMessage("Error");
+                inventoryAd_responseDto.setContent(null);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception ex){
+            inventoryAd_responseDto.setCode(VarList.RSP_ERROR);
+            inventoryAd_responseDto.setMessage(ex.getMessage());
+            inventoryAd_responseDto.setContent(null);
+            return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
