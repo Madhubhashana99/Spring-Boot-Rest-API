@@ -119,4 +119,27 @@ public class InventoryAd_ProductController {
             return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/deleteProduct/{productID}") //delete a product
+    public ResponseEntity deleteProduct(@PathVariable int productID){
+        try{
+            String res = inventoryAd_productService.deleteProduct(productID);
+            if (res.equals("00")){
+                inventoryAd_responseDto.setCode(VarList.RSP_SUCCESS);
+                inventoryAd_responseDto.setMessage("Successfully Deleted");
+                inventoryAd_responseDto.setContent(null);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.ACCEPTED);
+            }else {
+                inventoryAd_responseDto.setCode(VarList.RSP_DUPLICATED);
+                inventoryAd_responseDto.setMessage("Product not Available");
+                inventoryAd_responseDto.setContent(null);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception ex){
+            inventoryAd_responseDto.setCode(VarList.RSP_ERROR);
+            inventoryAd_responseDto.setMessage(ex.getMessage());
+            inventoryAd_responseDto.setContent(ex);
+            return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
