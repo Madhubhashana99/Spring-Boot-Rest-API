@@ -51,4 +51,16 @@ public class InventoryAd_ProductService {
         return modelMapper.map(productList, new TypeToken<ArrayList<InventoryAd_ProductDto>>() {
         }.getType());
     }
+
+
+    // Search products
+    public InventoryAd_ProductDto  searchProduct(int productId){
+        if (inventoryAd_productRepo.existsById(productId)){
+            Product product = inventoryAd_productRepo.findById(productId).orElse(null);
+            return modelMapper.map(product,  InventoryAd_ProductDto.class);
+        }else{
+            return null;
+
+        }
+    }
 }

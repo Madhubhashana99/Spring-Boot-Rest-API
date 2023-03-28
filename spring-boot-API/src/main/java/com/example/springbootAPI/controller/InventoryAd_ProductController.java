@@ -96,4 +96,27 @@ public class InventoryAd_ProductController {
             return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/searchProduct/{productID}") //Get searched product
+    public ResponseEntity searchProduct(@PathVariable int productID){
+        try{
+            InventoryAd_ProductDto inventoryAd_productDto = inventoryAd_productService.searchProduct(productID);
+            if (inventoryAd_productDto != null){
+                inventoryAd_responseDto.setCode(VarList.RSP_SUCCESS);
+                inventoryAd_responseDto.setMessage("Success");
+                inventoryAd_responseDto.setContent(inventoryAd_productDto);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.ACCEPTED);
+            }else {
+                inventoryAd_responseDto.setCode(VarList.RSP_DUPLICATED);
+                inventoryAd_responseDto.setMessage("Product not Available");
+                inventoryAd_responseDto.setContent(null);
+                return new ResponseEntity(inventoryAd_responseDto, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception ex){
+            inventoryAd_responseDto.setCode(VarList.RSP_ERROR);
+            inventoryAd_responseDto.setMessage(ex.getMessage());
+            inventoryAd_responseDto.setContent(ex);
+            return new ResponseEntity(inventoryAd_responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
